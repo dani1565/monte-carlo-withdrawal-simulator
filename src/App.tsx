@@ -183,13 +183,6 @@ export default function App() {
           </div>
         </div>
         <div className="header-actions">
-          <a
-            href="https://dani1565.github.io/Monte-Carlo-simulator/"
-            target="_blank"
-            rel="noreferrer"
-          >
-            למבחן המינוף ↗
-          </a>
           <div
             className={`status-pill${running ? " status-pill--running" : ""}`}
             role="status"
@@ -414,7 +407,7 @@ export default function App() {
             {field(
               "annualDrift",
               "תשואה שנתית צפויה",
-              "מומרת לרכיב יומי מצטבר, כמו במבחן המינוף.",
+              "קצב התשואה השנתי שממנו מחושב רכיב התשואה היומי.",
               "%",
               -100,
               100,
@@ -637,7 +630,7 @@ export default function App() {
         <details>
           <summary>הנחות המודל, הגדרות המדדים ומגבלות</summary>
           <p>
-            מודל השוק זהה למבחן המינוף ב־1×: תשואות יומיות עצמאיות מהתפלגות
+            מודל השוק משתמש בתשואות יומיות עצמאיות מהתפלגות
             Student-t מנורמלת לשונות. רכיב התשואה היומי הוא (1+μ)^(1/D)−1; רכיב
             התנודתיות הוא σ/√D × T(df) × √((df−2)/df). התשואה הפשוטה נעצרת
             ב־‎−100%. התנודתיות והחסימה עשויות לשנות את התשואה הממומשת לעומת
@@ -674,15 +667,8 @@ export default function App() {
             החישוב היא 10¹⁵ ₪; כל חריגה מדווחת בתוצאות ומגבילה את פרשנות המדדים.
           </p>
           <p>
-            מקור המודל והעיצוב:{" "}
-            <a
-              href="https://github.com/dani1565/Monte-Carlo-simulator"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Monte-Carlo-simulator
-            </a>
-            . אין כאן כיול חדש או נתוני שוק חיים.
+            הסימולציה מייצרת מסלולי שוק אקראיים לפי ההנחות שנבחרו, ואינה
+            משתמשת בנתוני שוק חיים.
           </p>
         </details>
       </section>
