@@ -1,10 +1,10 @@
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 
 export interface ParameterFieldProps {
   id: string;
   label: string;
   description: string;
-  details: string;
+  details: ReactNode;
   unit: string;
   value: string;
   min: number;

@@ -93,6 +93,8 @@ describe("annual withdrawals", () => {
       rates: [0],
       annualDrift: 0.09,
       annualVolatility: 0.18,
+      // Original reference fixture uses df=5, independent of UI defaults.
+      degreesOfFreedom: 5,
     };
     expect(simulate(p).results).toEqual(simulate(p).results);
     expect(simulate(p).results).not.toEqual(
