@@ -100,13 +100,15 @@ describe("annual withdrawals", () => {
     );
     // Fixture produced by reference commit dbe69dc3, engine.ts at leverage 1x.
     const r = simulate(p).results[0];
-    expect(r.median).toBe(1320.936616084272);
-    expect(r.mean).toBe(1340.671497639314);
-    expect(r.cvar).toBe(668.848928452307);
-    expect(r.positiveTailAverage).toBe(2318.117223903354);
-    expect(r.samples[0].values).toEqual([
+    // libm rounding can differ by a few ulps between Node/V8 versions.
+    // Same-runtime reproducibility above still requires exact equality.
+    expect(r.median).toBeCloseTo(1320.936616084272, 9);
+    expect(r.mean).toBeCloseTo(1340.671497639314, 9);
+    expect(r.cvar).toBeCloseTo(668.848928452307, 9);
+    expect(r.positiveTailAverage).toBeCloseTo(2318.117223903354, 9);
+    [
       1000, 1335.5677192956805, 1718.5966925537477, 1736.4027482005001,
-    ]);
+    ].forEach((v,i) => expect(r.samples[0].values[i]).toBeCloseTo(v,9));
   });
   it("reports caps, keeps all values finite, and never revives zero balances", () => {
     const cap = simulate({

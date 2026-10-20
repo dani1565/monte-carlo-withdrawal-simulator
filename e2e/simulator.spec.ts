@@ -37,6 +37,16 @@ test("calculates all modes with real workers, charts, real/nominal toggle, annua
     .getByRole("button", { name: "בחירת 10% · צמודה למדד", exact: true })
     .click();
   await expect(page.locator(".metric-card.active")).toContainText("669");
+  const labelSize = await page
+    .locator(".timeline-svg text")
+    .first()
+    .evaluate((el) => {
+      const text = el as SVGTextElement;
+      return (
+        parseFloat(getComputedStyle(text).fontSize) * text.getScreenCTM()!.a
+      );
+    });
+  expect(labelSize).toBeGreaterThanOrEqual(10);
   await page.getByRole("button", { name: "הכנסה שנתית", exact: true }).click();
   await expect(page.locator(".chart-readout")).toContainText("121");
   await page

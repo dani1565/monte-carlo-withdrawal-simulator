@@ -1,8 +1,21 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { color, label, money, percent } from "../format";
 import type { SimulationResult, StrategyResult } from "../simulation/types";
 
 type Kind = "balance" | "income" | "funding";
+function useChartWidth() {
+  const ref = useRef<SVGSVGElement>(null);
+  const [width, setWidth] = useState(860);
+  useEffect(() => {
+    if (!ref.current) return;
+    const observer = new ResizeObserver(([entry]) => {
+      setWidth(Math.max(240, entry.contentRect.width));
+    });
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, width] as const;
+}
 export function TimelineChart({
   result,
   selected,
@@ -18,8 +31,8 @@ export function TimelineChart({
   const [samples, setSamples] = useState(false);
   const [log, setLog] = useState(true);
   const p = result.params;
-  const W = 860,
-    H = 320,
+  const [svgRef, W] = useChartWidth();
+  const H = W < 500 ? 270 : 320,
     left = 78,
     right = 18,
     top = 18,
@@ -115,6 +128,7 @@ export function TimelineChart({
         )}
       </div>
       <svg
+        ref={svgRef}
         viewBox={`0 0 ${W} ${H}`}
         role="img"
         aria-label={title}
@@ -273,6 +287,8 @@ export function DistributionChart({
   factor: number;
 }) {
   const bins = selected.histogram;
+  const [svgRef, width] = useChartWidth();
+  const plotWidth = width - 85;
   const max = Math.max(1, selected.depletedCount, ...bins.map((b) => b.count));
   const data = [{ count: selected.depletedCount, from: 0, to: 0 }, ...bins];
   return (
@@ -287,7 +303,8 @@ export function DistributionChart({
         </div>
       </div>
       <svg
-        viewBox="0 0 860 220"
+        ref={svgRef}
+        viewBox={`0 0 ${width} 220`}
         role="img"
         aria-label="התפלגות היתרה בסוף התקופה"
         className="histogram-svg"
@@ -296,7 +313,7 @@ export function DistributionChart({
           <g key={i}>
             <line
               x1="65"
-              x2="840"
+              x2={width - 20}
               y1={180 - i * 75}
               y2={180 - i * 75}
               stroke="#263532"
@@ -309,9 +326,9 @@ export function DistributionChart({
         {data.map((b, i) => (
           <rect
             key={i}
-            x={66 + (i * 774) / data.length}
+            x={66 + (i * plotWidth) / data.length}
             y={180 - (b.count / max) * 150}
-            width={Math.max(1, 774 / data.length - 3)}
+            width={Math.max(1, plotWidth / data.length - 3)}
             height={(b.count / max) * 150}
             fill={i === 0 ? "#ff6b72" : "#51e5b4"}
             opacity=".8"
@@ -332,7 +349,7 @@ export function DistributionChart({
             <text x="140" y="207">
               {money(bins[0].from / factor)}
             </text>
-            <text x="840" y="207" textAnchor="end">
+            <text x={width - 20} y="207" textAnchor="end">
               {money(bins.at(-1)!.to / factor)}
             </text>
           </>
