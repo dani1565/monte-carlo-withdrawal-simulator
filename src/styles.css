@@ -42,6 +42,46 @@ p {
 .app-shell {
   min-height: 100vh;
 }
+.simulation-intro-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 20px;
+}
+.simulation-intro-grid article {
+  padding: 18px;
+  background: #091412;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+.simulation-intro-grid h3 {
+  color: var(--green);
+  font-size: 16px;
+  margin-bottom: 9px;
+}
+.simulation-intro-grid p {
+  color: #b8c7c3;
+  font-size: 14px;
+  line-height: 1.8;
+}
+.simulation-intro-note {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.8;
+}
+.simulation-intro-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+@media (max-width: 850px) {
+  .simulation-intro-grid {
+    grid-template-columns: 1fr;
+  }
+}
 button:focus-visible,
 input:focus-visible,
 summary:focus-visible,
