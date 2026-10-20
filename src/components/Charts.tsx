@@ -288,9 +288,9 @@ export function DistributionChart({
 }) {
   const bins = selected.histogram;
   const [svgRef, width] = useChartWidth();
-  const plotWidth = width - 85;
+  const positiveStart = 120;
+  const plotWidth = width - positiveStart - 20;
   const max = Math.max(1, selected.depletedCount, ...bins.map((b) => b.count));
-  const data = [{ count: selected.depletedCount, from: 0, to: 0 }, ...bins];
   return (
     <div className="chart-panel">
       <div className="chart-header">
@@ -323,30 +323,37 @@ export function DistributionChart({
             </text>
           </g>
         ))}
-        {data.map((b, i) => (
+        <rect
+          x={66}
+          y={180 - (selected.depletedCount / max) * 150}
+          width={26}
+          height={(selected.depletedCount / max) * 150}
+          fill="#ff6b72"
+        >
+          <title>אפס: {selected.depletedCount} מסלולים</title>
+        </rect>
+        {bins.map((b, i) => (
           <rect
             key={i}
-            x={66 + (i * plotWidth) / data.length}
+            x={positiveStart + (i * plotWidth) / bins.length}
             y={180 - (b.count / max) * 150}
-            width={Math.max(1, plotWidth / data.length - 3)}
+            width={Math.max(1, plotWidth / bins.length - 2)}
             height={(b.count / max) * 150}
-            fill={i === 0 ? "#ff6b72" : "#51e5b4"}
+            fill="#51e5b4"
             opacity=".8"
           >
             <title>
-              {i === 0
-                ? "אפס"
-                : `${money(b.from / factor)}–${money(b.to / factor)}`}
-              : {b.count} מסלולים
+              {`${money(b.from / factor)}–${money(b.to / factor)}`}: {b.count}{" "}
+              מסלולים
             </title>
           </rect>
         ))}
-        <text x="65" y="207">
+        <text x="79" y="207" textAnchor="middle">
           אפס
         </text>
         {bins.length > 0 && (
           <>
-            <text x="140" y="207">
+            <text x={positiveStart} y="207">
               {money(bins[0].from / factor)}
             </text>
             <text x={width - 20} y="207" textAnchor="end">
@@ -357,7 +364,7 @@ export function DistributionChart({
       </svg>
       <p className="sampling-note">
         ציר אנכי: מספר מסלולים · ציר אופקי: יתרה סופית · כל המסלולים נכללים,
-        לרבות אפסים.
+        לרבות אפסים. הגיעו לאפס: {selected.depletedCount} מסלולים.
       </p>
     </div>
   );

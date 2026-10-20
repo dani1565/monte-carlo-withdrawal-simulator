@@ -106,9 +106,9 @@ describe("annual withdrawals", () => {
     expect(r.mean).toBeCloseTo(1340.671497639314, 9);
     expect(r.cvar).toBeCloseTo(668.848928452307, 9);
     expect(r.positiveTailAverage).toBeCloseTo(2318.117223903354, 9);
-    [
-      1000, 1335.5677192956805, 1718.5966925537477, 1736.4027482005001,
-    ].forEach((v,i) => expect(r.samples[0].values[i]).toBeCloseTo(v,9));
+    [1000, 1335.5677192956805, 1718.5966925537477, 1736.4027482005001].forEach(
+      (v, i) => expect(r.samples[0].values[i]).toBeCloseTo(v, 9),
+    );
   });
   it("reports caps, keeps all values finite, and never revives zero balances", () => {
     const cap = simulate({
