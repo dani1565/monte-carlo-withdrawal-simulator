@@ -5,7 +5,7 @@ export const DEFAULT_PARAMS: SimulationParams = {
   paths: 2000,
   annualDrift: 0.09,
   annualVolatility: 0.18,
-  degreesOfFreedom: 5,
+  degreesOfFreedom: 4.2,
   rates: [0.03, 0.04, 0.05],
   modes: ["fixed", "inflation"],
   inflation: 0.02,
