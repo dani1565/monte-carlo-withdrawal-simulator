@@ -202,9 +202,9 @@ export default function App() {
         <div>
           <p className="eyebrow">סימולטור מונטה קרלו למשיכות שנתיות</p>
           <h2>
-            התיק עובד.
+            משיכה קבועה.
             <br />
-            <em>לכמה זמן הכסף יספיק?</em>
+            <em>עתיד משתנה</em>
           </h2>
         </div>
         <p className="hero-copy">
